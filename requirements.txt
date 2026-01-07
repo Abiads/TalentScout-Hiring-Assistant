@@ -1,0 +1,17 @@
+streamlit
+langchain==0.3.14
+langchain-community==0.3.14
+langchain-core==0.3.63
+langchain-groq==0.3.2
+pandas
+python-dotenv
+pydantic
+chromadb
+huggingface-hub
+sentence-transformers
+pypdf2
+python-docx
+transformers
+torch
+accelerate
+langchain-huggingface
