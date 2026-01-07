@@ -8,7 +8,7 @@ THEMES = {
         "name": "Professional Blue",
         "primary_color": "#1E3A8A",
         "secondary_color": "#3B82F6",
-        "background_color": "#F8FAFC",
+        "background_color": "#FFFFFF",
         "text_color": "#1E293B",
         "accent_color": "#10B981"
     },

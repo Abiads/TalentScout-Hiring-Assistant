@@ -1,0 +1,123 @@
+nohup: ignoring input
+
+Collecting usage statistics. To deactivate, set browser.gatherUsageStats to false.
+
+
+  You can now view your Streamlit app in your browser.
+
+  Local URL: http://localhost:8501
+  Network URL: http://10.0.13.42:8501
+  External URL: http://172.191.151.53:8501
+
+INFO:models.llm_manager:No Groq API key provided and local models not allowed; using local stub LLM. Set a Groq API key in Advanced Options to enable Groq models.
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/vscode/.local/lib/python3.11/site-packages/streamlit/runtime/scriptrunner/[0m[1mexec[0m [31m [0m
+[31m [0m [1m_code.py[0m:129 in exec_func_with_error_handling                                        [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/vscode/.local/lib/python3.11/site-packages/streamlit/runtime/scriptrunner/[0m[1mscri[0m [31m [0m
+[31m [0m [1mpt_runner.py[0m:671 in code_to_exec                                                     [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/workspaces/TalentScout-Hiring-Assistant/[0m[1mversion_3.py[0m:13 in <module>                 [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m 10 [0m[33m"""[0m                                                                            [31m [0m
+[31m [0m   [2m 11 [0m                                                                               [31m [0m
+[31m [0m   [2m 12 [0m[94mimport[0m[90m [0m[4;96mstreamlit[0m[90m [0m[94mas[0m[90m [0m[4;96mst[0m                                                         [31m [0m
+[31m [0m [31m❱ [0m 13 [1;4;94mfrom[0m[1;4;90m [0m[1;4;96mconfig[0m[1;4;96m.[0m[1;4;96msettings[0m[1;4;90m [0m[1;4;94mimport[0m[1;4m CONF[0mIDENCE_THRESHOLDS, CONVERSATION_MEMORY_LENGTH  [31m [0m
+[31m [0m   [2m 14 [0m[94mfrom[0m[90m [0m[4;96mutils[0m[4;96m.[0m[4;96mvalidators[0m[90m [0m[94mimport[0m validate_email, validate_phone, validate_tech_sta [31m [0m
+[31m [0m   [2m 15 [0m[94mfrom[0m[90m [0m[4;96mutils[0m[4;96m.[0m[4;96mresume_processing[0m[90m [0m[94mimport[0m extract_text_from_resume, analyze_resume_c [31m [0m
+[31m [0m   [2m 16 [0m[94mfrom[0m[90m [0m[4;96mutils[0m[4;96m.[0m[4;96mi18n[0m[90m [0m[94mimport[0m get_text, get_available_languages                       [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mModuleNotFoundError: [0mNo module named [32m'streamlit_shadcn_ui'[0m
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/vscode/.local/lib/python3.11/site-packages/streamlit/runtime/scriptrunner/[0m[1mexec[0m [31m [0m
+[31m [0m [1m_code.py[0m:129 in exec_func_with_error_handling                                        [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/vscode/.local/lib/python3.11/site-packages/streamlit/runtime/scriptrunner/[0m[1mscri[0m [31m [0m
+[31m [0m [1mpt_runner.py[0m:671 in code_to_exec                                                     [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/workspaces/TalentScout-Hiring-Assistant/[0m[1mversion_3.py[0m:13 in <module>                 [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m 10 [0m[33m"""[0m                                                                            [31m [0m
+[31m [0m   [2m 11 [0m                                                                               [31m [0m
+[31m [0m   [2m 12 [0m[94mimport[0m[90m [0m[4;96mstreamlit[0m[90m [0m[94mas[0m[90m [0m[4;96mst[0m                                                         [31m [0m
+[31m [0m [31m❱ [0m 13 [1;4;94mimport[0m[1;4;90m [0m[1;4;96mstreamlit_shadcn_ui[0m[1;4;90m [0m[1;4;94mas[0m[1;4;90m [0m[1;4;96mui[0m                                               [31m [0m
+[31m [0m   [2m 14 [0m[94mfrom[0m[90m [0m[4;96mconfig[0m[4;96m.[0m[4;96msettings[0m[90m [0m[94mimport[0m CONFIDENCE_THRESHOLDS, CONVERSATION_MEMORY_LENGTH  [31m [0m
+[31m [0m   [2m 15 [0m[94mfrom[0m[90m [0m[4;96mutils[0m[4;96m.[0m[4;96mvalidators[0m[90m [0m[94mimport[0m validate_email, validate_phone, validate_tech_sta [31m [0m
+[31m [0m   [2m 16 [0m[94mfrom[0m[90m [0m[4;96mutils[0m[4;96m.[0m[4;96mresume_processing[0m[90m [0m[94mimport[0m extract_text_from_resume, analyze_resume_c [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mModuleNotFoundError: [0mNo module named [32m'streamlit_shadcn_ui'[0m
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/vscode/.local/lib/python3.11/site-packages/streamlit/runtime/scriptrunner/[0m[1mexec[0m [31m [0m
+[31m [0m [1m_code.py[0m:129 in exec_func_with_error_handling                                        [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/vscode/.local/lib/python3.11/site-packages/streamlit/runtime/scriptrunner/[0m[1mscri[0m [31m [0m
+[31m [0m [1mpt_runner.py[0m:671 in code_to_exec                                                     [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/workspaces/TalentScout-Hiring-Assistant/[0m[1mversion_3.py[0m:13 in <module>                 [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m 10 [0m[33m"""[0m                                                                            [31m [0m
+[31m [0m   [2m 11 [0m                                                                               [31m [0m
+[31m [0m   [2m 12 [0m[94mimport[0m[90m [0m[4;96mstreamlit[0m[90m [0m[94mas[0m[90m [0m[4;96mst[0m                                                         [31m [0m
+[31m [0m [31m❱ [0m 13 [1;4;94mimport[0m[1;4;90m [0m[1;4;96mstreamlit_shadcn_ui[0m[1;4;90m [0m[1;4;94mas[0m[1;4;90m [0m[1;4;96mui[0m                                               [31m [0m
+[31m [0m   [2m 14 [0m[94mfrom[0m[90m [0m[4;96mconfig[0m[4;96m.[0m[4;96msettings[0m[90m [0m[94mimport[0m CONFIDENCE_THRESHOLDS, CONVERSATION_MEMORY_LENGTH  [31m [0m
+[31m [0m   [2m 15 [0m[94mfrom[0m[90m [0m[4;96mutils[0m[4;96m.[0m[4;96mvalidators[0m[90m [0m[94mimport[0m validate_email, validate_phone, validate_tech_sta [31m [0m
+[31m [0m   [2m 16 [0m[94mfrom[0m[90m [0m[4;96mutils[0m[4;96m.[0m[4;96mresume_processing[0m[90m [0m[94mimport[0m extract_text_from_resume, analyze_resume_c [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mModuleNotFoundError: [0mNo module named [32m'streamlit_shadcn_ui'[0m
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/vscode/.local/lib/python3.11/site-packages/streamlit/runtime/scriptrunner/[0m[1mexec[0m [31m [0m
+[31m [0m [1m_code.py[0m:129 in exec_func_with_error_handling                                        [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/vscode/.local/lib/python3.11/site-packages/streamlit/runtime/scriptrunner/[0m[1mscri[0m [31m [0m
+[31m [0m [1mpt_runner.py[0m:671 in code_to_exec                                                     [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/workspaces/TalentScout-Hiring-Assistant/[0m[1mversion_3.py[0m:13 in <module>                 [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m 10 [0m[33m"""[0m                                                                            [31m [0m
+[31m [0m   [2m 11 [0m                                                                               [31m [0m
+[31m [0m   [2m 12 [0m[94mimport[0m[90m [0m[4;96mstreamlit[0m[90m [0m[94mas[0m[90m [0m[4;96mst[0m                                                         [31m [0m
+[31m [0m [31m❱ [0m 13 [1;4;94mimport[0m[1;4;90m [0m[1;4;96mstreamlit_shadcn_ui[0m[1;4;90m [0m[1;4;94mas[0m[1;4;90m [0m[1;4;96mui[0m                                               [31m [0m
+[31m [0m   [2m 14 [0m[94mfrom[0m[90m [0m[4;96mconfig[0m[4;96m.[0m[4;96msettings[0m[90m [0m[94mimport[0m CONFIDENCE_THRESHOLDS, CONVERSATION_MEMORY_LENGTH  [31m [0m
+[31m [0m   [2m 15 [0m[94mfrom[0m[90m [0m[4;96mutils[0m[4;96m.[0m[4;96mvalidators[0m[90m [0m[94mimport[0m validate_email, validate_phone, validate_tech_sta [31m [0m
+[31m [0m   [2m 16 [0m[94mfrom[0m[90m [0m[4;96mutils[0m[4;96m.[0m[4;96mresume_processing[0m[90m [0m[94mimport[0m extract_text_from_resume, analyze_resume_c [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mModuleNotFoundError: [0mNo module named [32m'streamlit_shadcn_ui'[0m
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/vscode/.local/lib/python3.11/site-packages/streamlit/runtime/scriptrunner/[0m[1mexec[0m [31m [0m
+[31m [0m [1m_code.py[0m:129 in exec_func_with_error_handling                                        [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/vscode/.local/lib/python3.11/site-packages/streamlit/runtime/scriptrunner/[0m[1mscri[0m [31m [0m
+[31m [0m [1mpt_runner.py[0m:671 in code_to_exec                                                     [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/workspaces/TalentScout-Hiring-Assistant/[0m[1mversion_3.py[0m:13 in <module>                 [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m 10 [0m[33m"""[0m                                                                            [31m [0m
+[31m [0m   [2m 11 [0m                                                                               [31m [0m
+[31m [0m   [2m 12 [0m[94mimport[0m[90m [0m[4;96mstreamlit[0m[90m [0m[94mas[0m[90m [0m[4;96mst[0m                                                         [31m [0m
+[31m [0m [31m❱ [0m 13 [1;4;94mimport[0m[1;4;90m [0m[1;4;96mstreamlit_shadcn_ui[0m[1;4;90m [0m[1;4;94mas[0m[1;4;90m [0m[1;4;96mui[0m                                               [31m [0m
+[31m [0m   [2m 14 [0m[94mfrom[0m[90m [0m[4;96mconfig[0m[4;96m.[0m[4;96msettings[0m[90m [0m[94mimport[0m CONFIDENCE_THRESHOLDS, CONVERSATION_MEMORY_LENGTH  [31m [0m
+[31m [0m   [2m 15 [0m[94mfrom[0m[90m [0m[4;96mutils[0m[4;96m.[0m[4;96mvalidators[0m[90m [0m[94mimport[0m validate_email, validate_phone, validate_tech_sta [31m [0m
+[31m [0m   [2m 16 [0m[94mfrom[0m[90m [0m[4;96mutils[0m[4;96m.[0m[4;96mresume_processing[0m[90m [0m[94mimport[0m extract_text_from_resume, analyze_resume_c [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mModuleNotFoundError: [0mNo module named [32m'streamlit_shadcn_ui'[0m
+[31m──[0m[31m────────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────────[0m[31m──[0m
+[31m [0m [2m/home/vscode/.local/lib/python3.11/site-packages/streamlit/runtime/scriptrunner/[0m[1mexec[0m [31m [0m
+[31m [0m [1m_code.py[0m:129 in exec_func_with_error_handling                                        [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/home/vscode/.local/lib/python3.11/site-packages/streamlit/runtime/scriptrunner/[0m[1mscri[0m [31m [0m
+[31m [0m [1mpt_runner.py[0m:671 in code_to_exec                                                     [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m [2m/workspaces/TalentScout-Hiring-Assistant/[0m[1mversion_3.py[0m:13 in <module>                 [31m [0m
+[31m [0m                                                                                      [31m [0m
+[31m [0m   [2m 10 [0m[33m"""[0m                                                                            [31m [0m
+[31m [0m   [2m 11 [0m                                                                               [31m [0m
+[31m [0m   [2m 12 [0m[94mimport[0m[90m [0m[4;96mstreamlit[0m[90m [0m[94mas[0m[90m [0m[4;96mst[0m                                                         [31m [0m
+[31m [0m [31m❱ [0m 13 [1;4;94mimport[0m[1;4;90m [0m[1;4;96mstreamlit_shadcn_ui[0m[1;4;90m [0m[1;4;94mas[0m[1;4;90m [0m[1;4;96mui[0m                                               [31m [0m
+[31m [0m   [2m 14 [0m[94mfrom[0m[90m [0m[4;96mconfig[0m[4;96m.[0m[4;96msettings[0m[90m [0m[94mimport[0m CONFIDENCE_THRESHOLDS, CONVERSATION_MEMORY_LENGTH  [31m [0m
+[31m [0m   [2m 15 [0m[94mfrom[0m[90m [0m[4;96mutils[0m[4;96m.[0m[4;96mvalidators[0m[90m [0m[94mimport[0m validate_email, validate_phone, validate_tech_sta [31m [0m
+[31m [0m   [2m 16 [0m[94mfrom[0m[90m [0m[4;96mutils[0m[4;96m.[0m[4;96mresume_processing[0m[90m [0m[94mimport[0m extract_text_from_resume, analyze_resume_c [31m [0m
+[31m────────────────────────────────────────────────────────────────────────────────────────[0m
+[1;91mModuleNotFoundError: [0mNo module named [32m'streamlit_shadcn_ui'[0m
+  Stopping...

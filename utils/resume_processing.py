@@ -5,7 +5,7 @@ import io
 import streamlit as st
 from config.settings import CONFIDENCE_THRESHOLDS
 import json
-from models.llm_manager import LLMManager
+# Import LLMManager lazily inside functions to avoid circular imports during app startup
 
 def generate_motivation_message(resume_analysis_results):
     """Generate personalized motivation based on resume analysis"""
@@ -23,22 +23,42 @@ def generate_motivation_message(resume_analysis_results):
     return message
 
 def extract_text_from_resume(uploaded_file):
-    """Extract text from PDF or DOCX resume"""
+    """Extract text from PDF or DOCX resume with comprehensive error handling"""
     text = ""
     try:
         if uploaded_file.type == "application/pdf":
-            pdf_reader = PyPDF2.PdfReader(io.BytesIO(uploaded_file.read()))
-            for page in pdf_reader.pages:
-                text += page.extract_text()
+            try:
+                pdf_reader = PyPDF2.PdfReader(io.BytesIO(uploaded_file.read()))
+                for page in pdf_reader.pages:
+                    try:
+                        text += page.extract_text()
+                    except Exception as page_err:
+                        print(f"Warning: Failed to extract text from PDF page: {page_err}")
+                        continue
+            except Exception as pdf_err:
+                raise ValueError(f"PDF processing error: {str(pdf_err)}")
         elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-            doc = docx.Document(io.BytesIO(uploaded_file.read()))
-            for paragraph in doc.paragraphs:
-                text += paragraph.text + "\n"
+            try:
+                doc = docx.Document(io.BytesIO(uploaded_file.read()))
+                for paragraph in doc.paragraphs:
+                    try:
+                        text += paragraph.text + "\n"
+                    except Exception as para_err:
+                        print(f"Warning: Failed to extract text from paragraph: {para_err}")
+                        continue
+            except Exception as docx_err:
+                raise ValueError(f"DOCX processing error: {str(docx_err)}")
         else:
-            raise ValueError("Unsupported file format")
+            raise ValueError(f"Unsupported file format: {uploaded_file.type}")
+        
+        if not text or not text.strip():
+            raise ValueError("Resume file is empty or contains no extractable text")
+        
         return text
     except Exception as e:
-        st.error(f"Error processing resume: {str(e)}")
+        print(f"Error processing resume: {str(e)}")
+        if 'st' in globals():
+            st.error(f"Resume extraction failed: {str(e)}")
         return ""
 
         
@@ -120,10 +140,23 @@ def analyze_resume_consistency(resume_text, candidate_info):
 def parse_resume_with_llm(resume_text):
     """
     Extract structured information from resume text using LLM
-    Returns a dictionary with candidate details
+    Returns a dictionary with candidate details, or None if parsing fails
     """
     try:
-        llm = LLMManager.get_llm('conversation', temperature=0.1)
+        # Import LLMManager here to avoid circular import issues during module import
+        from models.llm_manager import LLMManager
+        
+        try:
+            llm = LLMManager.get_llm('conversation', temperature=0.1)
+        except Exception as llm_err:
+            print(f"Failed to initialize LLM: {str(llm_err)}")
+            return None
+        
+        # If we are using a local stub because no API key is present, avoid attempting
+        # to parse JSON via the LLM (it will return a stub text and lead to parse errors).
+        if getattr(llm, '_backend', '').startswith('Local Stub') or not getattr(llm, '_key_format_valid', True):
+            print("LLM backend is a local stub or API key invalid; skipping LLM-based parsing.")
+            return None
         
         prompt = f"""
         You are an expert HR assistant. Extract the following candidate information from the resume text below.
@@ -142,18 +175,54 @@ def parse_resume_with_llm(resume_text):
         JSON Response:
         """
         
-        response = llm.invoke(prompt).content
+        try:
+            response = llm.invoke(prompt)
+            if not response:
+                print("LLM returned empty response")
+                return None
+            
+            response_content = getattr(response, 'content', str(response))
+            if not response_content:
+                print("LLM response has no content")
+                return None
+        except Exception as invoke_err:
+            print(f"Error invoking LLM: {str(invoke_err)}")
+            return None
         
         # Clean response to ensure valid JSON
-        json_str = response.strip()
-        if "```json" in json_str:
-            json_str = json_str.split("```json")[1].split("```")[0].strip()
-        elif "```" in json_str:
-            json_str = json_str.split("```")[1].split("```")[0].strip()
-            
-        data = json.loads(json_str)
-        return data
+        json_str = response_content.strip()
+        
+        # Extract JSON from markdown code blocks if present
+        try:
+            if "```json" in json_str:
+                json_str = json_str.split("```json")[1].split("```")[0].strip()
+            elif "```" in json_str:
+                json_str = json_str.split("```")[1].split("```")[0].strip()
+        except (IndexError, ValueError) as parse_err:
+            print(f"Warning: Could not extract JSON from code blocks: {parse_err}")
+        
+        # Attempt to parse JSON
+        try:
+            data = json.loads(json_str)
+            # Validate required keys exist (with defaults)
+            required_fields = {
+                "Full Name": "",
+                "Email": "",
+                "Phone": "",
+                "Years of Experience": 0,
+                "Desired Position": "Software Engineer",
+                "Location": "",
+                "Tech Stack": []
+            }
+            for key, default in required_fields.items():
+                if key not in data:
+                    data[key] = default
+            return data
+        except json.JSONDecodeError as json_err:
+            print(f"JSON parsing error: {str(json_err)}")
+            print(f"Failed to parse: {json_str[:200]}")
+            return None
         
     except Exception as e:
-        print(f"Error parsing resume with LLM: {str(e)}")
+        print(f"Unexpected error parsing resume with LLM: {str(e)}")
         return None

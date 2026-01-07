@@ -1,0 +1,158 @@
+# Minimal local stub for `streamlit` to allow the app to run without the real package.
+# Implements the parts of the Streamlit API used by `version_3.py` as harmless no-ops.
+from types import SimpleNamespace
+from contextlib import contextmanager
+
+class SessionState(dict):
+    """A dict-like object for session state emulation."""
+    def __getattr__(self, item):
+        try:
+            return self[item]
+        except KeyError:
+            raise AttributeError(item)
+
+    def __setattr__(self, key, value):
+        self[key] = value
+
+# Context manager stub for containers (columns, expanders, forms, spinner)
+class DummyContainer:
+    def __enter__(self):
+        return self
+    def __exit__(self, exc_type, exc, tb):
+        return False
+    # Provide commonly-used methods
+    def __call__(self, *args, **kwargs):
+        return None
+    def write(self, *args, **kwargs):
+        return None
+
+@contextmanager
+def spinner(text=""):
+    yield
+
+@contextmanager
+def expander(label, **kwargs):
+    yield
+
+class DummyForm(DummyContainer):
+    pass
+
+class DummyColumn(DummyContainer):
+    pass
+
+# Basic no-op implementations matching signatures used in the app
+def set_page_config(**kwargs):
+    return None
+
+def error(msg):
+    # Print to stderr could be helpful during development, but keep minimal
+    print(f"Streamlit error: {msg}")
+
+def stop():
+    # Stop execution gracefully by raising SystemExit which terminates the script
+    raise SystemExit()
+
+def info(msg):
+    print(f"INFO: {msg}")
+
+def success(msg):
+    print(f"SUCCESS: {msg}")
+
+def warning(msg):
+    print(f"WARNING: {msg}")
+
+def markdown(text, **kwargs):
+    return None
+
+def title(text):
+    print(text)
+
+def header(text):
+    print(text)
+
+def subheader(text):
+    print(text)
+
+def write(*args, **kwargs):
+    print(*args)
+
+def text_input(label, value="", **kwargs):
+    return value
+
+def number_input(label, min_value=None, max_value=None, step=None, value=None, **kwargs):
+    return value if value is not None else (min_value or 0)
+
+def text_area(label, value="", height=None, key=None, **kwargs):
+    return value
+
+def selectbox(label, options=None, index=0, format_func=None, key=None, **kwargs):
+    options = list(options) if options is not None else []
+    try:
+        return options[index]
+    except Exception:
+        return options[0] if options else None
+
+def file_uploader(label, type=None, help=None):
+    # No uploaded file in minimal stub
+    return None
+
+def form(key):
+    return DummyForm()
+
+def form_submit_button(label):
+    # Tests and simple runs will not submit forms by default
+    return False
+
+def button(label, **kwargs):
+    return False
+
+def columns(spec):
+    # Return list of DummyColumn objects matching requested columns
+    return [DummyColumn() for _ in range(len(spec))]
+
+def metric(label, value, delta=None):
+    print(f"{label}: {value} ({delta})")
+
+def progress(value):
+    print(f"Progress: {value}")
+
+def download_button(label, data, file_name=None, mime=None):
+    print(f"Download requested: {file_name} ({mime})")
+    return None
+
+# Simple placeholder for Streamlit's session state
+session_state = SessionState()
+
+# Expose a module-level `sidebar` object usable as a context manager: `with st.sidebar:`
+sidebar = DummyContainer()
+
+# Provide a namespaced `st` for 'import streamlit as st' style imports
+st = SimpleNamespace(
+    set_page_config=set_page_config,
+    error=error,
+    stop=stop,
+    info=info,
+    success=success,
+    warning=warning,
+    markdown=markdown,
+    title=title,
+    header=header,
+    subheader=subheader,
+    write=write,
+    text_input=text_input,
+    number_input=number_input,
+    text_area=text_area,
+    selectbox=selectbox,
+    file_uploader=file_uploader,
+    form=form,
+    form_submit_button=form_submit_button,
+    spinner=spinner,
+    expander=expander,
+    button=button,
+    columns=columns,
+    metric=metric,
+    progress=progress,
+    download_button=download_button,
+    session_state=session_state,
+    sidebar=sidebar
+)

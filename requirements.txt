@@ -1,4 +1,5 @@
 streamlit
+streamlit-shadcn-ui
 langchain==0.3.14
 langchain-community==0.3.14
 langchain-core==0.3.63
