@@ -95,10 +95,26 @@ def render_sidebar(stage, resume_analysis=None):
             st.markdown("**Configure AI Settings**")
             st.markdown("Customize your Groq API configuration for this session.")
             
+            # Show API key source status
+            api_key_source = st.session_state.get('groq_api_key_source', 'manual')
+            current_key = st.session_state.get('groq_api_key', '')
+            
+            if current_key:
+                if api_key_source == 'secrets':
+                    st.success("✅ API Key Status: Loaded from Streamlit Secrets")
+                    st.caption(f"🔐 Using secret API key (masked for security)")
+                else:
+                    st.info("ℹ️ API Key Status: Loaded from Manual Input")
+                    st.caption(f"🔑 Using manually provided API key")
+            else:
+                st.warning("⚠️ API Key Status: Not configured")
+            
+            st.markdown("---")
+            
             # Use a separate input widget so we can programmatically set the active key only after verification
             groq_input = st.text_input(
                 "🔑 Groq API Key",
-                value=st.session_state.get('groq_api_key', ''),  # Use groq_api_key as source of truth
+                value=st.session_state.get('groq_api_key', '') if api_key_source == 'manual' else '',  # Only show manual input if from manual
                 key='groq_api_input',
                 help='Paste your Groq API key here (starts with "gsk_").',
                 type='password'
@@ -113,12 +129,12 @@ def render_sidebar(stage, resume_analysis=None):
                     st.caption(f"⚠️ {w}")
 
             # Visual status line (based on the input box, not the saved active key)
-            if not groq_input:
+            if not groq_input and api_key_source != 'secrets':
                 st.caption("Status: No key provided — using default settings.")
-            elif validate_groq_key(sanitized_key or groq_input):
+            elif groq_input and validate_groq_key(sanitized_key or groq_input):
                 create_badge("✅ Valid", "default")
                 st.success("Status: API key looks properly formatted.", icon="✅")
-            else:
+            elif groq_input:
                 create_badge("⚠️ Invalid", "destructive")
                 st.warning("Status: API key looks malformed — check and try again.", icon="⚠️")
 
@@ -126,25 +142,40 @@ def render_sidebar(stage, resume_analysis=None):
             col_verify1, col_verify2 = st.columns([1, 1])
             with col_verify1:
                 if st.button("🔍 Verify Key", use_container_width=True):
-                    # Use sanitized key if available
-                    key_to_test = sanitized_key or groq_input
-                    ok, message = LLMManager.verify_api_key(key_to_test)
-                    if ok:
-                        st.success(f"✅ {message}")
-                        # Save verified key as the active session key (separate from the input widget)
-                        # Do NOT modify groq_api_input as it's tied to the text input widget
-                        st.session_state['groq_api_key'] = key_to_test
-                        st.rerun()
+                    key_to_test = None
+                    source = None
+                    
+                    if groq_input:
+                        # User provided a key in the input field
+                        key_to_test = sanitized_key or groq_input
+                        source = 'manual'
+                    elif api_key_source == 'secrets' and current_key:
+                        # Verify the secret key
+                        key_to_test = current_key
+                        source = 'secrets'
+                    
+                    if key_to_test:
+                        ok, message = LLMManager.verify_api_key(key_to_test)
+                        if ok:
+                            st.success(f"✅ {message}")
+                            # Save verified key as the active session key
+                            st.session_state['groq_api_key'] = key_to_test
+                            st.session_state['groq_api_key_source'] = source
+                            st.rerun()
+                        else:
+                            st.error(f"❌ Verification failed: {message}")
                     else:
-                        st.error(f"❌ Verification failed: {message}")
+                        st.warning("⚠️ No API key to verify. Enter one in the field above or add to Streamlit secrets.")
             
             with col_verify2:
                 if st.button("🔄 Clear Key", use_container_width=True):
-                    st.session_state['groq_api_key'] = ''
-                    # Clear the input box by clearing its session state before the widget is created
-                    # This will be done on next rerun via default value
-                    st.info("API key cleared.")
-                    st.rerun()
+                    if api_key_source == 'secrets':
+                        st.warning("⚠️ Cannot clear secrets-based API key. Update .streamlit/secrets.toml and restart.")
+                    else:
+                        st.session_state['groq_api_key'] = ''
+                        st.session_state['groq_api_key_source'] = 'manual'
+                        st.info("✅ API key cleared.")
+                        st.rerun()
             
             st.markdown("---")
             

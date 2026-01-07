@@ -63,8 +63,20 @@ st.markdown("""
 
 
 # Load environment variables securely
-# Do not hardcode API keys — allow user to paste one via the advanced sidebar
+# First check Streamlit secrets, then allow user to paste one via the advanced sidebar
 CONVERSATION_MEMORY_LENGTH = 10
+
+def load_api_key_from_secrets():
+    """Load Groq API key from Streamlit secrets if available"""
+    try:
+        if hasattr(st, 'secrets') and 'groq_api_key' in st.secrets:
+            api_key = st.secrets.get('groq_api_key', '')
+            if api_key and api_key.strip():
+                return api_key.strip()
+    except Exception as e:
+        print(f"Warning: Could not load API key from secrets: {e}")
+    return None
+
 # Initialize session state variables
 def initialize_session_state():
     session_vars = {
@@ -85,17 +97,32 @@ def initialize_session_state():
         'theme': 'professional',  # Default theme
         'sentiment_scores': {},  # Store sentiment analysis results
         'groq_api_key': '',
+        'groq_api_key_source': 'manual',  # 'manual' or 'secrets'
         'allow_local_models': False,
     }
     
     for var, default in session_vars.items():
         if var not in st.session_state:
             st.session_state[var] = default
+    
+    # Load API key from secrets if not already set and secrets available
+    if not st.session_state.get('groq_api_key'):
+        secret_key = load_api_key_from_secrets()
+        if secret_key:
+            st.session_state['groq_api_key'] = secret_key
+            st.session_state['groq_api_key_source'] = 'secrets'
+            st.session_state['secrets_key_loaded'] = True
 
 
 def main():
     """Main application function with comprehensive error handling"""
     initialize_session_state()
+    
+    # Show success banner if API key was loaded from secrets
+    if st.session_state.get('secrets_key_loaded') and st.session_state.get('groq_api_key'):
+        st.success("✅ Groq API key successfully loaded from Streamlit secrets!")
+        # Clear the flag so it doesn't show on every rerun
+        st.session_state['secrets_key_loaded'] = False
     
     # Initialize LLM with error handling
     try:
